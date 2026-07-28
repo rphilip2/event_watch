@@ -8,30 +8,26 @@
 #   max_price, onsale_only, exclude_keywords
 
 watches:
-  - name: "Zach Bryan - anywhere in Texas"
-    keyword: "Zach Bryan"
-    stateCode: "TX"
-    days_ahead: 365
-    max_price: 250
+  - name: "Brooklyn Nets games"
+    keyword: "Brooklyn Nets"
+    classificationName: "Sports"
+    city: "Brooklyn"
+    days_ahead: 240
 
-  - name: "Any concert at Red Rocks"
-    venueId: "KovZpZAEAdaA"       # Red Rocks Amphitheatre
+  - name: "Concerts at Barclays Center"
+    postalCode: "11217"
+    radius: 1
+    unit: "miles"
+    classificationName: "Music"
+    days_ahead: 240
+
+  - name: "EDM concerts in NYC"
+    keyword: "EDM"
+    city: "New York"
     classificationName: "Music"
     days_ahead: 120
-    exclude_keywords: ["yoga", "film on the rocks"]
 
-  - name: "NBA in Dallas"
-    keyword: "Mavericks"
-    city: "Dallas"
-    classificationName: "Sports"
-    days_ahead: 90
-    max_price: 180
-
-  - name: "Comedy near me, cheap"
-    postalCode: "78701"
-    radius: 50
-    unit: "miles"
-    classificationName: "Comedy"
+  - name: "Movies in NYC"
+    classificationName: "Film"
+    city: "New York"
     days_ahead: 60
-    max_price: 60
-    onsale_only: true
