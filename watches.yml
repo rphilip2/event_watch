@@ -1,0 +1,37 @@
+# Each watch is one query against the Ticketmaster Discovery API.
+# Add, remove, or edit freely -- the script picks up changes on the next run.
+#
+# API-side filters (fast, done by Ticketmaster):
+#   keyword, city, stateCode, countryCode, postalCode, radius, unit,
+#   classificationName, venueId, days_ahead
+# Local filters (applied after fetching):
+#   max_price, onsale_only, exclude_keywords
+
+watches:
+  - name: "Zach Bryan - anywhere in Texas"
+    keyword: "Zach Bryan"
+    stateCode: "TX"
+    days_ahead: 365
+    max_price: 250
+
+  - name: "Any concert at Red Rocks"
+    venueId: "KovZpZAEAdaA"       # Red Rocks Amphitheatre
+    classificationName: "Music"
+    days_ahead: 120
+    exclude_keywords: ["yoga", "film on the rocks"]
+
+  - name: "NBA in Dallas"
+    keyword: "Mavericks"
+    city: "Dallas"
+    classificationName: "Sports"
+    days_ahead: 90
+    max_price: 180
+
+  - name: "Comedy near me, cheap"
+    postalCode: "78701"
+    radius: 50
+    unit: "miles"
+    classificationName: "Comedy"
+    days_ahead: 60
+    max_price: 60
+    onsale_only: true

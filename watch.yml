@@ -1,0 +1,49 @@
+name: event-watch
+
+on:
+  schedule:
+    # Every 15 minutes. GitHub queues scheduled jobs, so treat this as
+    # "roughly every 15 min" -- runs can be delayed under load.
+    - cron: "*/15 * * * *"
+  workflow_dispatch:   # lets you trigger a run by hand from the Actions tab
+
+permissions:
+  contents: write      # required so the job can commit state.json back
+
+concurrency:
+  group: event-watch   # never let two runs race on the state file
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Run watcher
+        env:
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ALERT_EMAIL: ${{ secrets.ALERT_EMAIL }}
+          ALERT_FROM: ${{ secrets.ALERT_FROM }}
+        run: python monitor.py
+
+      - name: Commit state
+        run: |
+          git config user.name "event-watch-bot"
+          git config user.email "actions@github.com"
+          git add state.json
+          if git diff --staged --quiet; then
+            echo "No state change."
+          else
+            git commit -m "state: $(date -u +%FT%TZ)"
+            git pull --rebase --autostash
+            git push
+          fi
